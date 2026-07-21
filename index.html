@@ -10,9 +10,9 @@
        ============================ -->
   <script>
     const SONG_TITLE = "100 Days to Live";
-    const COVER_IMG = "ALBUMCOVER.jpg";          // Album Cover Datei
-    const SPOTIFY_LOGO = "SPOTIFYLOGO.png";      // Spotify Logo Datei
-    const APPLE_LOGO = "APPLELOGO.png";          // Apple Music Logo Datei
+    const COVER_IMG = "Albumcover.jpg";          // Album Cover Datei
+    const SPOTIFY_LOGO = "Spotify Logo transparent.png";      // Spotify Logo Datei
+    const APPLE_LOGO = "AppleMusic Logo transparent.png";          // Apple Music Logo Datei
 
     const SPOTIFY_LINK = "https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg";
     const APPLE_LINK = "https://music.apple.com/de/album/100-days-to-live-single/1842874012";
@@ -131,5 +131,34 @@
       fbq('trackCustom', 'SpotifyClick');
     };
 
-    // Apple Button
-    const appleBtn = document.get
+   // Apple Button
+    const appleBtn = document.getElementById("apple-button");
+    appleBtn.href = APPLE_LINK;
+    appleBtn.onclick = function(event) {
+      event.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'AppleMusicClick');
+    };
+
+    // ============================
+    // Consent + Pixel
+    // ============================
+    function acceptConsent() {
+      document.getElementById('consent-banner').style.display = 'none';
+
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', '1288632976680117');
+      fbq('track', 'PageView');
+    }
+  </script>
+
+</body>
+</html>
