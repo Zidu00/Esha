@@ -17,18 +17,27 @@
     fbq('track', 'PageView');
   </script>
 </head>
+
 <body>
-  <h1>Spotify: 100 Days to Live Outbound4</h1>
-  <a href="https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg" 
-   onclick="event.stopPropagation(); fbq('100 Days to Live', 'OutboundClick'); fbq('100 Days to Live', 'SpotifyClick');">
-  bei Spotify hören<br><br></p>
+  <h1>Spotify: 100 Days to Live Outbound5</h1>
+
+  <!-- Spotify -->
+  <a href="https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg"
+     onclick="event.stopPropagation(); 
+              fbq('track', 'OutboundClick'); 
+              fbq('trackCustom', 'SpotifyClick');">
+    bei Spotify hören
   </a>
 
-  <a href="https://music.apple.com/de/album/100-days-to-live-single/1842874012" 
-   onclick="event.stopPropagation(); fbq('100 Days to Live', 'OutboundClick'); fbq('100 Days to Live', 'AppleMusicClick');">
-  bei Apple Music hören<br></p>
-  </a>
+  <br><br>
 
+  <!-- Apple Music -->
+  <a href="https://music.apple.com/de/album/100-days-to-live-single/1842874012"
+     onclick="event.stopPropagation(); 
+              fbq('track', 'OutboundClick'); 
+              fbq('trackCustom', 'AppleMusicClick');">
+    bei Apple Music hören
+  </a>
 
 </body>
 </html>
