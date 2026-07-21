@@ -28,7 +28,7 @@
 
     // Größen zentral steuerbar
     const COVER_SIZE = 320;     // px
-    const LOGO_SIZE = 60;       // px (kleiner, damit links neben Buttons gut aussieht)
+    const LOGO_SIZE = 60;       // px
     const BUTTON_SIZE = 18;     // px
   </script>
 
@@ -37,8 +37,8 @@
        ============================ -->
   <style>
     :root {
-      --bg-gradient-top: #2a2a33;      /* warm evening tone */
-      --bg-gradient-bottom: #0b0f14;   /* petrol shadow */
+      --bg-gradient-top: #3a3a47;      /* heller Abendton */
+      --bg-gradient-bottom: #0f1a24;   /* petrol-blauer Schatten */
       --accent-gold: #d4a75c;
       --accent-amber: #e6b980;
       --text-light: #f5f5f5;
@@ -65,14 +65,25 @@
       margin-bottom: 30px;
     }
 
-    /* Tabelle für Logo + Button nebeneinander */
+    /* Tabelle für Logo rechts + Button links */
     table.platform-table {
       margin: 0 auto 30px auto;
+      width: 320px;
     }
 
     table.platform-table td {
       vertical-align: middle;
       padding: 10px;
+    }
+
+    td.logo-cell {
+      text-align: right;
+      width: 40%;
+    }
+
+    td.button-cell {
+      text-align: left;
+      width: 60%;
     }
 
     a.button {
@@ -103,6 +114,7 @@
     }
 
     #consent-banner {
+      display: none; /* wird durch EU-Check aktiviert */
       position: fixed;
       bottom: 0;
       left: 0;
@@ -137,40 +149,40 @@
   <!-- Presave -->
   <table class="platform-table">
     <tr>
-      <td><img id="presave-logo" alt="Presave Logo"></td>
-      <td><a id="presave-button" class="button presave">Presave</a></td>
+      <td class="logo-cell"><img id="presave-logo" alt="Presave Logo"></td>
+      <td class="button-cell"><a id="presave-button" class="button presave">Presave</a></td>
     </tr>
   </table>
 
   <!-- Spotify -->
   <table class="platform-table">
     <tr>
-      <td><img id="spotify-logo" alt="Spotify Logo"></td>
-      <td><a id="spotify-button" class="button">Spotify</a></td>
+      <td class="logo-cell"><img id="spotify-logo" alt="Spotify Logo"></td>
+      <td class="button-cell"><a id="spotify-button" class="button">Spotify</a></td>
     </tr>
   </table>
 
   <!-- Apple Music -->
   <table class="platform-table">
     <tr>
-      <td><img id="apple-logo" alt="Apple Music Logo"></td>
-      <td><a id="apple-button" class="button apple">Apple Music</a></td>
+      <td class="logo-cell"><img id="apple-logo" alt="Apple Music Logo"></td>
+      <td class="button-cell"><a id="apple-button" class="button apple">Apple Music</a></td>
     </tr>
   </table>
 
   <!-- Instagram -->
   <table class="platform-table">
     <tr>
-      <td><img id="instagram-logo" alt="Instagram Logo"></td>
-      <td><a id="instagram-button" class="button social">Instagram</a></td>
+      <td class="logo-cell"><img id="instagram-logo" alt="Instagram Logo"></td>
+      <td class="button-cell"><a id="instagram-button" class="button social">Instagram</a></td>
     </tr>
   </table>
 
   <!-- TikTok -->
   <table class="platform-table">
     <tr>
-      <td><img id="tiktok-logo" alt="TikTok Logo"></td>
-      <td><a id="tiktok-button" class="button social">TikTok</a></td>
+      <td class="logo-cell"><img id="tiktok-logo" alt="TikTok Logo"></td>
+      <td class="button-cell"><a id="tiktok-button" class="button social">TikTok</a></td>
     </tr>
   </table>
 
@@ -252,10 +264,31 @@
       fbq('trackCustom', 'TikTokClick');
     };
 
-    // Consent + Pixel
-    function acceptConsent() {
-      document.getElementById('consent-banner').style.display = 'none';
+    // ============================
+    // EU-Check + Pixel laden
+    // ============================
+    async function checkEU() {
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        const data = await response.json();
 
+        const euCountries = [
+          "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
+          "HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK",
+          "SI","ES","SE"
+        ];
+
+        if (euCountries.includes(data.country)) {
+          document.getElementById('consent-banner').style.display = 'block';
+        } else {
+          loadPixel();
+        }
+      } catch (e) {
+        document.getElementById('consent-banner').style.display = 'block';
+      }
+    }
+
+    function loadPixel() {
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -268,6 +301,13 @@
       fbq('init', '1288632976680117');
       fbq('track', 'PageView');
     }
+
+    function acceptConsent() {
+      document.getElementById('consent-banner').style.display = 'none';
+      loadPixel();
+    }
+
+    checkEU();
   </script>
 
 </body>
