@@ -2,8 +2,21 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Esha – 100 Days to Live</title>
+  <title>Landingpage</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ============================
+       ZENTRALE VARIABLEN
+       ============================ -->
+  <script>
+    const SONG_TITLE = "100 Days to Live";
+    const COVER_IMG = "ALBUMCOVER.jpg";          // Album Cover Datei
+    const SPOTIFY_LOGO = "SPOTIFYLOGO.png";      // Spotify Logo Datei
+    const APPLE_LOGO = "APPLELOGO.png";          // Apple Music Logo Datei
+
+    const SPOTIFY_LINK = "https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg";
+    const APPLE_LINK = "https://music.apple.com/de/album/100-days-to-live-single/1842874012";
+  </script>
 
   <style>
     body {
@@ -45,7 +58,6 @@
       color: #000;
     }
 
-    /* Consent Banner */
     #consent-banner {
       position: fixed;
       bottom: 0;
@@ -72,33 +84,25 @@
 
 <body>
 
-  <h1>100 Days to Live</h1>
+  <h1 id="song-title"></h1>
 
   <!-- Album Cover -->
-  <img src="ALBUMCOVER.jpg" class="cover" alt="Album Cover">
+  <img id="cover-img" class="cover" alt="Album Cover">
 
   <!-- Spotify -->
   <div class="platform">
-    <img src="SPOTIFYLOGO.png" alt="Spotify Logo">
+    <img id="spotify-logo" alt="Spotify Logo">
     <br>
-    <a class="button"
-       href="https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg"
-       onclick="event.stopPropagation();
-                fbq('track', 'OutboundClick');
-                fbq('trackCustom', 'SpotifyClick');">
+    <a id="spotify-button" class="button">
       Bei Spotify hören
     </a>
   </div>
 
   <!-- Apple Music -->
   <div class="platform">
-    <img src="APPLELOGO.png" alt="Apple Music Logo">
+    <img id="apple-logo" alt="Apple Music Logo">
     <br>
-    <a class="button apple"
-       href="https://music.apple.com/de/album/100-days-to-live-single/1842874012"
-       onclick="event.stopPropagation();
-                fbq('track', 'OutboundClick');
-                fbq('trackCustom', 'AppleMusicClick');">
+    <a id="apple-button" class="button apple">
       Bei Apple Music hören
     </a>
   </div>
@@ -110,23 +114,22 @@
   </div>
 
   <script>
-    function acceptConsent() {
-      document.getElementById('consent-banner').style.display = 'none';
+    // ============================
+    // Variablen in die Seite einsetzen
+    // ============================
+    document.getElementById("song-title").innerText = SONG_TITLE;
+    document.getElementById("cover-img").src = COVER_IMG;
+    document.getElementById("spotify-logo").src = SPOTIFY_LOGO;
+    document.getElementById("apple-logo").src = APPLE_LOGO;
 
-      // Pixel erst nach Zustimmung laden
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
+    // Spotify Button
+    const spotifyBtn = document.getElementById("spotify-button");
+    spotifyBtn.href = SPOTIFY_LINK;
+    spotifyBtn.onclick = function(event) {
+      event.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'SpotifyClick');
+    };
 
-      fbq('init', '1288632976680117');
-      fbq('track', 'PageView');
-    }
-  </script>
-
-</body>
-</html>
+    // Apple Button
+    const appleBtn = document.get
