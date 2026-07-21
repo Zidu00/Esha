@@ -9,52 +9,94 @@
        ZENTRALE VARIABLEN
        ============================ -->
   <script>
-    const SONG_TITLE = "Antes da Voz";
-    const COVER_IMG = "Albumcover.jpg";          // Album Cover Datei
-    const SPOTIFY_LOGO = "Spotify Logo transparent 200.png";      // Spotify Logo Datei
-    const APPLE_LOGO = "AppleMusic Logo transparent 300.png";          // Apple Music Logo Datei
+    const SONG_TITLE = "100 Days to Live";
 
+    // Bilder
+    const COVER_IMG = "ALBUMCOVER.jpg";
+    const SPOTIFY_LOGO = "SPOTIFYLOGO.png";
+    const APPLE_LOGO = "APPLELOGO.png";
+    const PRESAVE_LOGO = "PRESAVELOGO.png";
+    const INSTAGRAM_LOGO = "INSTAGRAMLOGO.png";
+    const TIKTOK_LOGO = "TIKTOKLOGO.png";
+
+    // Links
     const SPOTIFY_LINK = "https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg";
     const APPLE_LINK = "https://music.apple.com/de/album/100-days-to-live-single/1842874012";
+    const PRESAVE_LINK = "https://your-presave-link.com";
+    const INSTAGRAM_LINK = "https://www.instagram.com/esha_alto";
+    const TIKTOK_LINK = "https://www.tiktok.com/@esha_alto";
+
+    // Größen zentral steuerbar
+    const COVER_SIZE = 320;     // px
+    const LOGO_SIZE = 140;      // px
+    const BUTTON_SIZE = 18;     // px
   </script>
 
+  <!-- ============================
+       FARBPALETTE PASSEND ZUM COVER
+       ============================ -->
   <style>
+    :root {
+      --bg-dark: #0d0d0f;
+      --bg-gradient-top: #1a1a22;
+      --bg-gradient-bottom: #0b0f14;
+      --accent-gold: #d4a75c;
+      --accent-amber: #e6b980;
+      --text-light: #f5f5f5;
+      --spotify-green: #1DB954;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
+      background: linear-gradient(to bottom, var(--bg-gradient-top), var(--bg-gradient-bottom));
+      color: var(--text-light);
       text-align: center;
       padding: 20px;
     }
 
-    img.cover {
-      width: 300px;
-      border-radius: 10px;
+    h1 {
+      color: var(--accent-amber);
+      font-size: 32px;
       margin-bottom: 20px;
     }
 
+    img.cover {
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      margin-bottom: 30px;
+    }
+
     .platform {
-      margin: 20px 0;
+      margin: 30px 0;
     }
 
     .platform img {
-      width: 140px;
       margin-bottom: 10px;
     }
 
     a.button {
       display: inline-block;
-      padding: 12px 20px;
-      background: #1DB954;
+      padding: 14px 22px;
+      background: var(--spotify-green);
       color: #fff;
       text-decoration: none;
-      border-radius: 8px;
-      font-size: 18px;
+      border-radius: 10px;
       margin-top: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
 
     a.button.apple {
       background: #fff;
+      color: #000;
+    }
+
+    a.button.presave {
+      background: var(--accent-gold);
+      color: #000;
+    }
+
+    a.button.social {
+      background: var(--accent-amber);
       color: #000;
     }
 
@@ -68,14 +110,15 @@
       padding: 20px;
       text-align: center;
       font-size: 16px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
     }
 
     #consent-banner button {
       padding: 10px 20px;
       margin-left: 10px;
-      background: #1DB954;
+      background: var(--accent-gold);
       border: none;
-      color: #fff;
+      color: #000;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -88,6 +131,15 @@
 
   <!-- Album Cover -->
   <img id="cover-img" class="cover" alt="Album Cover">
+
+  <!-- Presave -->
+  <div class="platform">
+    <img id="presave-logo" alt="Presave Logo">
+    <br>
+    <a id="presave-button" class="button presave">
+      Jetzt vorab speichern (Presave)
+    </a>
+  </div>
 
   <!-- Spotify -->
   <div class="platform">
@@ -107,6 +159,24 @@
     </a>
   </div>
 
+  <!-- Instagram -->
+  <div class="platform">
+    <img id="instagram-logo" alt="Instagram Logo">
+    <br>
+    <a id="instagram-button" class="button social">
+      Instagram besuchen
+    </a>
+  </div>
+
+  <!-- TikTok -->
+  <div class="platform">
+    <img id="tiktok-logo" alt="TikTok Logo">
+    <br>
+    <a id="tiktok-button" class="button social">
+      TikTok besuchen
+    </a>
+  </div>
+
   <!-- Consent Banner -->
   <div id="consent-banner">
     Diese Seite verwendet Tracking (Meta Pixel). Bitte stimme zu, um fortzufahren.
@@ -115,34 +185,77 @@
 
   <script>
     // ============================
-    // Variablen in die Seite einsetzen
+    // Variablen einsetzen
     // ============================
     document.getElementById("song-title").innerText = SONG_TITLE;
-    document.getElementById("cover-img").src = COVER_IMG;
-    document.getElementById("spotify-logo").src = SPOTIFY_LOGO;
-    document.getElementById("apple-logo").src = APPLE_LOGO;
 
-    // Spotify Button
-    const spotifyBtn = document.getElementById("spotify-button");
-    spotifyBtn.href = SPOTIFY_LINK;
-    spotifyBtn.onclick = function(event) {
-      event.stopPropagation();
+    // Cover
+    const coverImg = document.getElementById("cover-img");
+    coverImg.src = COVER_IMG;
+    coverImg.style.width = COVER_SIZE + "px";
+
+    // Logos
+    const logos = {
+      "spotify-logo": SPOTIFY_LOGO,
+      "apple-logo": APPLE_LOGO,
+      "presave-logo": PRESAVE_LOGO,
+      "instagram-logo": INSTAGRAM_LOGO,
+      "tiktok-logo": TIKTOK_LOGO
+    };
+
+    for (const id in logos) {
+      const el = document.getElementById(id);
+      el.src = logos[id];
+      el.style.width = LOGO_SIZE + "px";
+    }
+
+    // Buttons
+    const buttons = {
+      "spotify-button": SPOTIFY_LINK,
+      "apple-button": APPLE_LINK,
+      "presave-button": PRESAVE_LINK,
+      "instagram-button": INSTAGRAM_LINK,
+      "tiktok-button": TIKTOK_LINK
+    };
+
+    for (const id in buttons) {
+      const btn = document.getElementById(id);
+      btn.href = buttons[id];
+      btn.style.fontSize = BUTTON_SIZE + "px";
+    }
+
+    // Tracking Events
+    document.getElementById("spotify-button").onclick = e => {
+      e.stopPropagation();
       fbq('track', 'OutboundClick');
       fbq('trackCustom', 'SpotifyClick');
     };
 
-   // Apple Button
-    const appleBtn = document.getElementById("apple-button");
-    appleBtn.href = APPLE_LINK;
-    appleBtn.onclick = function(event) {
-      event.stopPropagation();
+    document.getElementById("apple-button").onclick = e => {
+      e.stopPropagation();
       fbq('track', 'OutboundClick');
       fbq('trackCustom', 'AppleMusicClick');
     };
 
-    // ============================
+    document.getElementById("presave-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'PresaveClick');
+    };
+
+    document.getElementById("instagram-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'InstagramClick');
+    };
+
+    document.getElementById("tiktok-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'TikTokClick');
+    };
+
     // Consent + Pixel
-    // ============================
     function acceptConsent() {
       document.getElementById('consent-banner').style.display = 'none';
 
