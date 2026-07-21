@@ -9,7 +9,7 @@
        ZENTRALE VARIABLEN
        ============================ -->
   <script>
-    const SONG_TITLE = "Antes da Voz";
+    const SONG_TITLE = "100 Days to Live";
 
     // Bilder
     const COVER_IMG = "ALBUMCOVER.jpg";
@@ -28,7 +28,7 @@
 
     // Größen zentral steuerbar
     const COVER_SIZE = 320;     // px
-    const LOGO_SIZE = 60;      // px
+    const LOGO_SIZE = 60;       // px (kleiner, damit links neben Buttons gut aussieht)
     const BUTTON_SIZE = 18;     // px
   </script>
 
@@ -37,9 +37,8 @@
        ============================ -->
   <style>
     :root {
-      --bg-dark: #0d0d0f;
-      --bg-gradient-top: #1a1a22;
-      --bg-gradient-bottom: #0b0f14;
+      --bg-gradient-top: #2a2a33;      /* warm evening tone */
+      --bg-gradient-bottom: #0b0f14;   /* petrol shadow */
       --accent-gold: #d4a75c;
       --accent-amber: #e6b980;
       --text-light: #f5f5f5;
@@ -66,12 +65,14 @@
       margin-bottom: 30px;
     }
 
-    .platform {
-      margin: 30px 0;
+    /* Tabelle für Logo + Button nebeneinander */
+    table.platform-table {
+      margin: 0 auto 30px auto;
     }
 
-    .platform img {
-      margin-bottom: 10px;
+    table.platform-table td {
+      vertical-align: middle;
+      padding: 10px;
     }
 
     a.button {
@@ -81,8 +82,9 @@
       color: #fff;
       text-decoration: none;
       border-radius: 10px;
-      margin-top: 10px;
+      font-size: var(--button-font-size);
       box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      white-space: nowrap;
     }
 
     a.button.apple {
@@ -133,47 +135,44 @@
   <img id="cover-img" class="cover" alt="Album Cover">
 
   <!-- Presave -->
-  <div class="platform">
-    <img id="presave-logo" alt="Presave Logo">
-    <br>
-    <a id="presave-button" class="button presave">
-      Jetzt vorab speichern (Presave)
-    </a>
-  </div>
+  <table class="platform-table">
+    <tr>
+      <td><img id="presave-logo" alt="Presave Logo"></td>
+      <td><a id="presave-button" class="button presave">Presave</a></td>
+    </tr>
+  </table>
 
   <!-- Spotify -->
-  <div class="platform">
-    <img id="spotify-logo" alt="Spotify Logo">"  "
-    <a id="spotify-button" class="button">
-      Bei Spotify hören
-    </a>
-  </div>
+  <table class="platform-table">
+    <tr>
+      <td><img id="spotify-logo" alt="Spotify Logo"></td>
+      <td><a id="spotify-button" class="button">Spotify</a></td>
+    </tr>
+  </table>
 
   <!-- Apple Music -->
-  <div class="platform">
-    <img id="apple-logo" alt="Apple Music Logo">"  "
-    <a id="apple-button" class="button apple">
-      Bei Apple Music hören
-    </a>
-  </div>
+  <table class="platform-table">
+    <tr>
+      <td><img id="apple-logo" alt="Apple Music Logo"></td>
+      <td><a id="apple-button" class="button apple">Apple Music</a></td>
+    </tr>
+  </table>
 
   <!-- Instagram -->
-  <div class="platform">
-    <img id="instagram-logo" alt="Instagram Logo">
-    <br>
-    <a id="instagram-button" class="button social">
-      Instagram besuchen
-    </a>
-  </div>
+  <table class="platform-table">
+    <tr>
+      <td><img id="instagram-logo" alt="Instagram Logo"></td>
+      <td><a id="instagram-button" class="button social">Instagram</a></td>
+    </tr>
+  </table>
 
   <!-- TikTok -->
-  <div class="platform">
-    <img id="tiktok-logo" alt="TikTok Logo">
-    <br>
-    <a id="tiktok-button" class="button social">
-      TikTok besuchen
-    </a>
-  </div>
+  <table class="platform-table">
+    <tr>
+      <td><img id="tiktok-logo" alt="TikTok Logo"></td>
+      <td><a id="tiktok-button" class="button social">TikTok</a></td>
+    </tr>
+  </table>
 
   <!-- Consent Banner -->
   <div id="consent-banner">
