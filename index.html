@@ -1,47 +1,132 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-  <title>Esha – Fado Spotify Link</title>
+  <meta charset="UTF-8">
+  <title>Esha – 100 Days to Live</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 1288632976680117 -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1288632976680117');
-    fbq('track', 'PageView');
-  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    img.cover {
+      width: 300px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .platform {
+      margin: 20px 0;
+    }
+
+    .platform img {
+      width: 140px;
+      margin-bottom: 10px;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #1DB954;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    a.button.apple {
+      background: #fff;
+      color: #000;
+    }
+
+    /* Consent Banner */
+    #consent-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #222;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    #consent-banner button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #1DB954;
+      border: none;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
-  <img src="Albumcover.jpg" alt="Album Cover" width="300">
 
-  <h1>Spotify: 100 Days to Live Outbound5</h1>
+  <h1>100 Days to Live</h1>
+
+  <!-- Album Cover -->
+  <img src="ALBUMCOVER.jpg" class="cover" alt="Album Cover">
 
   <!-- Spotify -->
-  <a href="https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg"
-     onclick="event.stopPropagation(); 
-              fbq('track', 'OutboundClick'); 
-              fbq('trackCustom', 'SpotifyClick');">
-    bei Spotify hören
-  </a>
-  <img src="Spotify Logo transparent.png" alt="Spotify Logo" width="120">
-
-  <br><br>
+  <div class="platform">
+    <img src="SPOTIFYLOGO.png" alt="Spotify Logo">
+    <br>
+    <a class="button"
+       href="https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg"
+       onclick="event.stopPropagation();
+                fbq('track', 'OutboundClick');
+                fbq('trackCustom', 'SpotifyClick');">
+      Bei Spotify hören
+    </a>
+  </div>
 
   <!-- Apple Music -->
-  <a href="https://music.apple.com/de/album/100-days-to-live-single/1842874012"
-     onclick="event.stopPropagation(); 
-              fbq('track', 'OutboundClick'); 
-              fbq('trackCustom', 'AppleMusicClick');">
-    bei Apple Music hören
-  </a>
-  <img src="AppleMusic Logo transparent.png" alt="Apple Music Logo" width="120">
+  <div class="platform">
+    <img src="APPLELOGO.png" alt="Apple Music Logo">
+    <br>
+    <a class="button apple"
+       href="https://music.apple.com/de/album/100-days-to-live-single/1842874012"
+       onclick="event.stopPropagation();
+                fbq('track', 'OutboundClick');
+                fbq('trackCustom', 'AppleMusicClick');">
+      Bei Apple Music hören
+    </a>
+  </div>
+
+  <!-- Consent Banner -->
+  <div id="consent-banner">
+    Diese Seite verwendet Tracking (Meta Pixel). Bitte stimme zu, um fortzufahren.
+    <button onclick="acceptConsent()">Zustimmen</button>
+  </div>
+
+  <script>
+    function acceptConsent() {
+      document.getElementById('consent-banner').style.display = 'none';
+
+      // Pixel erst nach Zustimmung laden
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', '1288632976680117');
+      fbq('track', 'PageView');
+    }
+  </script>
 
 </body>
 </html>
