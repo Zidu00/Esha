@@ -13,7 +13,6 @@
 
     // Bilder
     const COVER_IMG = "ALBUMCOVER.jpg";
-    
     const SPOTIFY_LOGO = "SPOTIFYLOGO.png";
     const APPLE_LOGO = "APPLELOGO.png";
     const PRESAVE_LOGO = "PRESAVELOGO.png";
@@ -25,27 +24,26 @@
     const APPLE_LINK = "https://music.apple.com/de/album/100-days-to-live-single/1842874012";
     const PRESAVE_LINK = "https://your-presave-link.com";
     const INSTAGRAM_LINK = "https://www.instagram.com/esha_alto";
-    const TIKTOK_LINK = "https://www.tiktok.com/@esha_alto";
+    const TIKTOK_LINK = "https://www.tiktok.com/@esha_alto";  /* FIXED */
 
     // Größen zentral steuerbar
-    const COVER_SIZE = 320;     // px
-    const LOGO_SIZE = 60;       // px
-    const BUTTON_SIZE = 18;     // px
+    const COVER_SIZE = 320;
+    const LOGO_SIZE = 60;
+    const BUTTON_SIZE = 18;
   </script>
 
   <!-- ============================
-       FARBPALETTE PASSEND ZUM COVER
+       SICHTBARER FARBVERLAUF
        ============================ -->
   <style>
-      :root {
-        --bg-gradient-top: #6b5a6f;      /* warm evening tone */
-        --bg-gradient-bottom: #1c2f40;   /* petrol shadow */
-        --accent-gold: #d4a75c;
-        --accent-amber: #e6b980;
-        --text-light: #f5f5f5;
-        --spotify-green: #1DB954;
-      }
-
+    :root {
+      --bg-gradient-top: #6b5a6f;      /* warm evening tone */
+      --bg-gradient-bottom: #1c2f40;   /* petrol shadow */
+      --accent-gold: #d4a75c;
+      --accent-amber: #e6b980;
+      --text-light: #f5f5f5;
+      --spotify-green: #1DB954;
+    }
 
     body {
       font-family: Arial, sans-serif;
@@ -116,7 +114,7 @@
     }
 
     #consent-banner {
-      display: none; /* wird durch EU-Check aktiviert */
+      display: none;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -194,50 +192,123 @@
     <button onclick="acceptConsent()">Zustimmen</button>
   </div>
 
- <script>
-async function checkEU() {
-  try {
-    const response = await fetch("https://ipapi.co/json/");
-    const data = await response.json();
+  <script>
+    // ============================
+    // Variablen einsetzen
+    // ============================
+    document.getElementById("song-title").innerText = SONG_TITLE;
 
-    const euCountries = [
-      "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
-      "HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK",
-      "SI","ES","SE"
-    ];
+    // Cover
+    const coverImg = document.getElementById("cover-img");
+    coverImg.src = COVER_IMG;
+    coverImg.style.width = COVER_SIZE + "px";
 
-    if (euCountries.includes(data.country)) {
-      // EU → Consent anzeigen
-      document.getElementById('consent-banner').style.display = 'block';
-    } else {
-      // Nicht EU → Pixel sofort laden
+    // Logos
+    const logos = {
+      "spotify-logo": SPOTIFY_LOGO,
+      "apple-logo": APPLE_LOGO,
+      "presave-logo": PRESAVE_LOGO,
+      "instagram-logo": INSTAGRAM_LOGO,
+      "tiktok-logo": TIKTOK_LOGO
+    };
+
+    for (const id in logos) {
+      const el = document.getElementById(id);
+      el.src = logos[id];
+      el.style.width = LOGO_SIZE + "px";
+    }
+
+    // Buttons
+    const buttons = {
+      "spotify-button": SPOTIFY_LINK,
+      "apple-button": APPLE_LINK,
+      "presave-button": PRESAVE_LINK,
+      "instagram-button": INSTAGRAM_LINK,
+      "tiktok-button": TIKTOK_LINK
+    };
+
+    for (const id in buttons) {
+      const btn = document.getElementById(id);
+      btn.href = buttons[id];
+      btn.style.fontSize = BUTTON_SIZE + "px";
+    }
+
+    // Tracking Events
+    document.getElementById("spotify-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'SpotifyClick');
+    };
+
+    document.getElementById("apple-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'AppleMusicClick');
+    };
+
+    document.getElementById("presave-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'PresaveClick');
+    };
+
+    document.getElementById("instagram-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'InstagramClick');
+    };
+
+    document.getElementById("tiktok-button").onclick = e => {
+      e.stopPropagation();
+      fbq('track', 'OutboundClick');
+      fbq('trackCustom', 'TikTokClick');
+    };
+
+    // ============================
+    // EU-Check + Pixel laden
+    // ============================
+    async function checkEU() {
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        const data = await response.json();
+
+        const euCountries = [
+          "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
+          "HU","IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK",
+          "SI","ES","SE"
+        ];
+
+        if (euCountries.includes(data.country)) {
+          document.getElementById('consent-banner').style.display = 'block';
+        } else {
+          loadPixel();
+        }
+      } catch (e) {
+        document.getElementById('consent-banner').style.display = 'block';
+      }
+    }
+
+    function loadPixel() {
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+      fbq('init', '1288632976680117');
+      fbq('track', 'PageView');
+    }
+
+    function acceptConsent() {
+      document.getElementById('consent-banner').style.display = 'none';
       loadPixel();
     }
-  } catch (e) {
-    // Fallback: Consent anzeigen
-    document.getElementById('consent-banner').style.display = 'block';
-  }
-}
 
-function loadPixel() {
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
+    checkEU();
+  </script>
 
-  fbq('init', '1288632976680117');
-  fbq('track', 'PageView');
-}
-
-function acceptConsent() {
-  document.getElementById('consent-banner').style.display = 'none';
-  loadPixel();
-}
-
-// Start EU-Check
-checkEU();
-</script>
+</body>
+</html>
