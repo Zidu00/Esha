@@ -15,27 +15,30 @@
 
     const COVER_IMG = "ALBUMCOVER.jpg";
 
-    // Sichtbarkeit der Plattformen
+    // Logos (liegen im Hauptordner Esha/)
+    const SPOTIFY_LOGO   = "../SPOTIFYLOGO.png";
+    const APPLE_LOGO     = "../APPLELOGO.png";
+    const PRESAVE_LOGO   = "../PRESAVELOGO.png";
+    const INSTAGRAM_LOGO = "../INSTAGRAMLOGO.png";
+    const TIKTOK_LOGO    = "../TIKTOKLOGO.png";
+
+    // Links
+    const SPOTIFY_LINK   = "#";
+    const APPLE_LINK     = "#";
+    const PRESAVE_LINK   = "#";
+    const INSTAGRAM_LINK = "#";
+    const TIKTOK_LINK    = "#";
+
+    // Sichtbarkeit der Buttons
     const SHOW_PRESAVE   = true;
     const SHOW_SPOTIFY   = true;
     const SHOW_APPLE     = true;
     const SHOW_INSTAGRAM = true;
     const SHOW_TIKTOK    = true;
-        
-    const PRESAVE_LOGO = "../PRESAVELOGO.png";
-    const SPOTIFY_LOGO = "../SPOTIFYLOGO.png";
-    const APPLE_LOGO = "../APPLELOGO.png";
-    const INSTAGRAM_LOGO = "../INSTAGRAMLOGO.png";
-    const TIKTOK_LOGO = "../TIKTOKLOGO.png";
 
-    const PRESAVE_LINK = "#";
-    const SPOTIFY_LINK = "#";
-    const APPLE_LINK = "#";
-    const INSTAGRAM_LINK = "#";
-    const TIKTOK_LINK = "#";
-
-    const COVER_SIZE = 260;
-    const LOGO_SIZE = 26;
+    // Größen
+    const COVER_SIZE  = 260;
+    const LOGO_SIZE   = 26;
     const BUTTON_SIZE = 12;
   </script>
 
@@ -72,8 +75,18 @@
     h1 {
       margin-bottom: 14px;
       font-size: 26px;
-      color: var(--accent-amber);
-      text-shadow: 0 0 6px rgba(0,0,0,0.7);
+      text-shadow: 0 0 8px rgba(0,0,0,0.6);
+    }
+
+    /* Glow Effekt */
+    .glow {
+      animation: glowPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%   { text-shadow: 0 0 4px rgba(255,255,255,0.2); }
+      50%  { text-shadow: 0 0 14px rgba(255,255,255,0.45); }
+      100% { text-shadow: 0 0 4px rgba(255,255,255,0.2); }
     }
 
     img.cover {
@@ -98,7 +111,6 @@
     }
 
     .platform-logo {
-      width: var(--logo-size);
       width: 26px;
     }
 
@@ -126,17 +138,6 @@
     a.button.instagram { background: var(--instagram-purple);color: #fff; }
     a.button.tiktok    { background: var(--tiktok-black);    color: #fff; }
 
-    .glow {
-      animation: glowPulse 2.4s ease-in-out infinite;
-    }
-
-    @keyframes glowPulse {
-      0%   { box-shadow: 0 0 4px rgba(255,255,255,0.2); }
-      50%  { box-shadow: 0 0 14px rgba(255,255,255,0.45); }
-      100% { box-shadow: 0 0 4px rgba(255,255,255,0.2); }
-    }
-
-    
     /* Consent Banner */
     #consent-banner {
       display: none;
@@ -170,35 +171,8 @@
 
   <img id="cover-img" class="cover" alt="Album Cover">
 
-  <!-- Presave -->
-  <div class="platform-row">
-    <img id="presave-logo" class="platform-logo">
-    <a id="presave-button" class="button presave">Presave</a>
-  </div>
-
-  <!-- Spotify -->
-  <div class="platform-row">
-    <img id="spotify-logo" class="platform-logo">
-    <a id="spotify-button" class="button spotify">Spotify</a>
-  </div>
-
-  <!-- Apple Music -->
-  <div class="platform-row">
-    <img id="apple-logo" class="platform-logo">
-    <a id="apple-button" class="button apple">Apple Music</a>
-  </div>
-
-  <!-- Instagram -->
-  <div class="platform-row">
-    <img id="instagram-logo" class="platform-logo">
-    <a id="instagram-button" class="button instagram">Instagram</a>
-  </div>
-
-  <!-- TikTok -->
-  <div class="platform-row">
-    <img id="tiktok-logo" class="platform-logo">
-    <a id="tiktok-button" class="button tiktok">TikTok</a>
-  </div>
+  <!-- Dynamische Plattformen -->
+  <div id="platforms"></div>
 
   <!-- Consent Banner -->
   <div id="consent-banner">
@@ -213,35 +187,38 @@
     coverImg.src = COVER_IMG;
     coverImg.style.width = COVER_SIZE + "px";
 
-    const logos = {
-      "spotify-logo": SPOTIFY_LOGO,
-      "apple-logo": APPLE_LOGO,
-      "presave-logo": PRESAVE_LOGO,
-      "instagram-logo": INSTAGRAM_LOGO,
-      "tiktok-logo": TIKTOK_LOGO
-    };
+    /* Dynamische Plattformen */
+    const platforms = [
+      { show: SHOW_PRESAVE,   logo: PRESAVE_LOGO,   text: "Presave",    link: PRESAVE_LINK,   class: "presave" },
+      { show: SHOW_SPOTIFY,   logo: SPOTIFY_LOGO,   text: "Spotify",    link: SPOTIFY_LINK,   class: "spotify" },
+      { show: SHOW_APPLE,     logo: APPLE_LOGO,     text: "Apple Music",link: APPLE_LINK,     class: "apple" },
+      { show: SHOW_INSTAGRAM, logo: INSTAGRAM_LOGO, text: "Instagram",  link: INSTAGRAM_LINK, class: "instagram" },
+      { show: SHOW_TIKTOK,    logo: TIKTOK_LOGO,    text: "TikTok",     link: TIKTOK_LINK,    class: "tiktok" }
+    ];
 
-    for (const id in logos) {
-      const el = document.getElementById(id);
-      el.src = logos[id];
-      el.style.width = LOGO_SIZE + "px";
-    }
+    const container = document.getElementById("platforms");
 
-    const buttons = {
-      "spotify-button": SPOTIFY_LINK,
-      "apple-button": APPLE_LINK,
-      "presave-button": PRESAVE_LINK,
-      "instagram-button": INSTAGRAM_LINK,
-      "tiktok-button": TIKTOK_LINK
-    };
+    platforms.forEach(p => {
+      if (!p.show) return;
 
-    for (const id in buttons) {
-      const btn = document.getElementById(id);
-      btn.href = buttons[id];
-      btn.style.fontSize = BUTTON_SIZE + "px";
-    }
+      const row = document.createElement("div");
+      row.className = "platform-row";
 
-    /* Farbextraktion */
+      const logo = document.createElement("img");
+      logo.src = p.logo;
+      logo.className = "platform-logo";
+
+      const btn = document.createElement("a");
+      btn.href = p.link;
+      btn.className = `button ${p.class}`;
+      btn.innerText = p.text;
+
+      row.appendChild(logo);
+      row.appendChild(btn);
+      container.appendChild(row);
+    });
+
+    /* Farbextraktion + dynamische Titel-Farbe */
     function extractColors() {
       const img = new Image();
       img.crossOrigin = "Anonymous";
@@ -285,25 +262,22 @@
         }
 
         document.body.style.background = `linear-gradient(to bottom, ${top}, ${bottom})`;
+
+        /* Dynamische Titel-Farbe */
+        let titleColor;
+
+        if (brightness > 150) {
+          titleColor = `rgb(${r * 0.3}, ${g * 0.3}, ${b * 0.3})`;
+        } else {
+          titleColor = `rgb(${Math.min(255, r + 180)}, ${Math.min(255, g + 180)}, ${Math.min(255, b + 180)})`;
+        }
+
+        const title = document.getElementById("song-title");
+        title.style.color = titleColor;
       };
     }
 
     extractColors();
-
-    // Dynamische Titel-Farbe basierend auf Cover
-    let titleColor;
-    
-    if (brightness > 150) {
-      // helles Cover → dunkler Titel
-      titleColor = `rgb(${r * 0.3}, ${g * 0.3}, ${b * 0.3})`;
-    } else {
-      // dunkles Cover → heller Titel
-      titleColor = `rgb(${Math.min(255, r + 180)}, ${Math.min(255, g + 180)}, ${Math.min(255, b + 180)})`;
-    }
-    
-    document.getElementById("song-title").style.color = titleColor;
-    document.getElementById("song-title").style.textShadow = "0 0 8px rgba(0,0,0,0.6)";
-
 
     /* EU Consent */
     async function checkEU() {
