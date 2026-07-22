@@ -87,9 +87,10 @@
 
     /* Tabelle kompakt */
     table.platform-table {
-      margin: 0 auto 14px auto;
-      width: 300px;
-      border-collapse: collapse;
+      margin: 0 auto 10px auto;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
     }
 
     table.platform-table td {
@@ -98,15 +99,13 @@
       line-height: 1 !important;
     }
 
-    td.logo-cell {
-      text-align: right;
-      width: 35%;
+    td.logo-cell,
+    td.button-cell {
+      text-align: center;
+      width: 100%;
+      display: block;
     }
 
-    td.button-cell {
-      text-align: left;
-      width: 65%;
-    }
 
     /* Buttons kompakt + Hover */
     a.button {
@@ -170,10 +169,13 @@
   <!-- Presave -->
   <table class="platform-table">
     <tr>
-      <td class="logo-cell"><img id="presave-logo"></td>
-      <td class="button-cell"><a id="presave-button" class="button presave">Presave</a></td>
+      <td class="logo-cell">
+        <img id="spotify-logo"><br>
+        <a id="spotify-button" class="button spotify">Spotify</a>
+      </td>
     </tr>
   </table>
+
 
   <!-- Spotify -->
   <table class="platform-table">
@@ -209,7 +211,7 @@
 
   <!-- Consent Banner -->
   <div id="consent-banner">
-    Diese Seite verwendet Tracking (Meta Pixel). Bitte stimme zu, um fortzufahren.
+    This site uses tracking (Meta Pixel) to improve performance and measure engagement. Please confirm to continue.
     <button onclick="acceptConsent()">Zustimmen</button>
   </div>
 
