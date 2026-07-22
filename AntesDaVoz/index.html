@@ -9,6 +9,8 @@
        ZENTRALE VARIABLEN
        ============================ -->
   <script>
+
+    const META_PIXEL_ID = "1288632976680117";   // zentral verwaltet
     const SONG_TITLE = "Antes da Voz";
 
     // Bilder
@@ -79,10 +81,13 @@
     
     table.platform-table td {
       vertical-align: middle;
-      padding: 2px 4px !important; /* sehr kompakt */
+      padding: 1px 3px !important; /* sehr kompakt */
     }
 
-
+    a.button {
+      padding: 4px 8px !important;   /* kompakt */
+      line-height: 1 !important;     /* entfernt die Leerzeile */
+    }
     
     td.logo-cell {
       text-align: right;
@@ -116,10 +121,16 @@
       color: #000;
     }
 
-    a.button.social {
-      background: var(--accent-amber);
-      color: #000;
+    a.button.tiktok {
+      background: #000;   /* schwarz */
+      color: #fff;        /* weiß */
     }
+
+    a.button.instagram {
+      background: #5a2a82;   /* dunkel-lila */
+      color: #fff;           /* weiß */
+    }
+
 
     #consent-banner {
       display: none;
@@ -182,7 +193,7 @@
   <table class="platform-table">
     <tr>
       <td class="logo-cell"><img id="instagram-logo" alt="Instagram Logo"></td>
-      <td class="button-cell"><a id="instagram-button" class="button social">Instagram</a></td>
+      <td class="button-cell"><a id="instagram-button" class="button instagram">Instagram</a></td>
     </tr>
   </table>
 
@@ -190,7 +201,7 @@
   <table class="platform-table">
     <tr>
       <td class="logo-cell"><img id="tiktok-logo" alt="TikTok Logo"></td>
-      <td class="button-cell"><a id="tiktok-button" class="button social">TikTok</a></td>
+      <td class="button-cell"><a id="tiktok-button" class="button tiktok">TikTok</a></td>
     </tr>
   </table>
 
@@ -305,10 +316,11 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-
-      fbq('init', '1288632976680117');
+    
+      fbq('init', META_PIXEL_ID);   // jetzt zentral
       fbq('track', 'PageView');
     }
+
 
     function acceptConsent() {
       document.getElementById('consent-banner').style.display = 'none';
