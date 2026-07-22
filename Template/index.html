@@ -17,7 +17,7 @@
     // Cover (liegt im selben Ordner)
     const COVER_IMG = "ALBUMCOVER.jpg";
 
-    // Logos (liegen im Hauptordner)
+    // Logos (liegen im Hauptordner Esha/)
     const SPOTIFY_LOGO = "../SPOTIFYLOGO.png";
     const APPLE_LOGO = "../APPLELOGO.png";
     const PRESAVE_LOGO = "../PRESAVELOGO.png";
@@ -58,12 +58,12 @@
       text-align: center;
       padding: 10px;
       transition: background 1.5s ease;
-      animation: bgPulse 12s ease-in-out infinite;
+      animation: bgPulse 14s ease-in-out infinite;
     }
 
     @keyframes bgPulse {
-      0% { filter: brightness(1); }
-      50% { filter: brightness(1.15); }
+      0%   { filter: brightness(1); }
+      50%  { filter: brightness(1.12); }
       100% { filter: brightness(1); }
     }
 
@@ -71,13 +71,13 @@
       margin-bottom: 14px;
       font-size: 26px;
       color: var(--accent-amber);
-      text-shadow: 0 0 6px rgba(0,0,0,0.6);
+      text-shadow: 0 0 6px rgba(0,0,0,0.7);
     }
 
     img.cover {
       border-radius: 10px;
       box-shadow: 0 0 14px rgba(0,0,0,0.6);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       transition: transform 0.3s ease;
     }
 
@@ -85,29 +85,26 @@
       transform: scale(1.03);
     }
 
-    /* Tabelle kompakt */
+    /* Tabelle kompakt, mittig */
     table.platform-table {
       margin: 0 auto 10px auto;
       width: 100%;
-      max-width: 300px;
+      max-width: 260px;
+      border-collapse: collapse;
       text-align: center;
     }
 
     table.platform-table td {
       vertical-align: middle;
-      padding: 2px 3px !important;
+      padding: 4px 0 !important;
       line-height: 1 !important;
     }
 
-    td.logo-cell,
-    td.button-cell {
+    td.platform-cell {
       text-align: center;
-      width: 100%;
-      display: block;
     }
 
-
-    /* Buttons kompakt + Hover */
+    /* Buttons kompakt + Hover, alle gleich breit */
     a.button {
       display: inline-block;
       padding: 6px 10px !important;
@@ -115,7 +112,7 @@
       border-radius: 6px;
       text-decoration: none;
       white-space: nowrap;
-      width: 180px; /* alle Buttons gleich breit */
+      width: 190px; /* an Apple-Button orientiert */
       text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -126,11 +123,17 @@
     }
 
     /* Button-Farben */
-    a.button.spotify { background: var(--spotify-green); color: #fff; }
-    a.button.apple { background: var(--apple-red); color: #fff; }
-    a.button.presave { background: var(--accent-gold); color: #000; }
-    a.button.instagram { background: var(--instagram-purple); color: #fff; }
-    a.button.tiktok { background: var(--tiktok-black); color: #fff; }
+    a.button.spotify   { background: var(--spotify-green);   color: #fff; }
+    a.button.apple     { background: var(--apple-red);       color: #fff; }
+    a.button.presave   { background: var(--accent-gold);     color: #000; }
+    a.button.instagram { background: var(--instagram-purple);color: #fff; }
+    a.button.tiktok    { background: var(--tiktok-black);    color: #fff; }
+
+    /* Logos */
+    .platform-logo {
+      display: block;
+      margin: 0 auto 4px auto;
+    }
 
     /* Consent Banner */
     #consent-banner {
@@ -139,11 +142,11 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #222;
+      background: #111;
       color: #fff;
-      padding: 16px;
+      padding: 14px;
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
     }
 
@@ -169,49 +172,56 @@
   <!-- Presave -->
   <table class="platform-table">
     <tr>
-      <td class="logo-cell">
-        <img id="spotify-logo"><br>
-        <a id="spotify-button" class="button spotify">Spotify</a>
+      <td class="platform-cell">
+        <img id="presave-logo" class="platform-logo">
+        <a id="presave-button" class="button presave">Presave</a>
       </td>
     </tr>
   </table>
 
-
   <!-- Spotify -->
   <table class="platform-table">
     <tr>
-      <td class="logo-cell"><img id="spotify-logo"></td>
-      <td class="button-cell"><a id="spotify-button" class="button spotify">Spotify</a></td>
+      <td class="platform-cell">
+        <img id="spotify-logo" class="platform-logo">
+        <a id="spotify-button" class="button spotify">Spotify</a>
+      </td>
     </tr>
   </table>
 
   <!-- Apple Music -->
   <table class="platform-table">
     <tr>
-      <td class="logo-cell"><img id="apple-logo"></td>
-      <td class="button-cell"><a id="apple-button" class="button apple">Apple Music</a></td>
+      <td class="platform-cell">
+        <img id="apple-logo" class="platform-logo">
+        <a id="apple-button" class="button apple">Apple Music</a>
+      </td>
     </tr>
   </table>
 
   <!-- Instagram -->
   <table class="platform-table">
     <tr>
-      <td class="logo-cell"><img id="instagram-logo"></td>
-      <td class="button-cell"><a id="instagram-button" class="button instagram">Instagram</a></td>
+      <td class="platform-cell">
+        <img id="instagram-logo" class="platform-logo">
+        <a id="instagram-button" class="button instagram">Instagram</a>
+      </td>
     </tr>
   </table>
 
   <!-- TikTok -->
   <table class="platform-table">
     <tr>
-      <td class="logo-cell"><img id="tiktok-logo"></td>
-      <td class="button-cell"><a id="tiktok-button" class="button tiktok">TikTok</a></td>
+      <td class="platform-cell">
+        <img id="tiktok-logo" class="platform-logo">
+        <a id="tiktok-button" class="button tiktok">TikTok</a>
+      </td>
     </tr>
   </table>
 
   <!-- Consent Banner -->
   <div id="consent-banner">
-    This site uses tracking (Meta Pixel) to improve performance and measure engagement. Please confirm to continue.
+    This site uses tracking (Meta Pixel) for performance and analytics. Please confirm to continue.
     <button onclick="acceptConsent()">Zustimmen</button>
   </div>
 
@@ -257,7 +267,7 @@
     }
 
     // ============================
-    // Automatische Farbextraktion aus dem Cover
+    // Verbesserte Farbextraktion aus dem Cover
     // ============================
     function extractColors() {
       const img = new Image();
@@ -276,7 +286,7 @@
         let r = 0, g = 0, b = 0;
         let count = 0;
 
-        for (let i = 0; i < data.length; i += 4 * 50) {
+        for (let i = 0; i < data.length; i += 4 * 80) {
           r += data[i];
           g += data[i + 1];
           b += data[i + 2];
@@ -287,20 +297,22 @@
         g = Math.floor(g / count);
         b = Math.floor(b / count);
 
-        // Helligkeit bestimmen
         const brightness = (r + g + b) / 3;
 
-        // Dynamische Anpassung:
-        // Helles Cover → dunkler Verlauf
-        // Dunkles Cover → heller Verlauf
         let top, bottom;
 
-        if (brightness > 140) {
-          top = `rgb(${r * 0.4}, ${g * 0.4}, ${b * 0.4})`;
-          bottom = `rgb(${r * 0.15}, ${g * 0.15}, ${b * 0.15})`;
+        if (brightness > 150) {
+          // sehr helles Cover → dunkler, kontrastreicher Hintergrund
+          top = `rgb(${Math.max(0, r * 0.35)}, ${Math.max(0, g * 0.35)}, ${Math.max(0, b * 0.35)})`;
+          bottom = `rgb(${Math.max(0, r * 0.15)}, ${Math.max(0, g * 0.15)}, ${Math.max(0, b * 0.15)})`;
+        } else if (brightness < 90) {
+          // sehr dunkles Cover → aufgehellter Verlauf
+          top = `rgb(${Math.min(255, r + 60)}, ${Math.min(255, g + 60)}, ${Math.min(255, b + 60)})`;
+          bottom = `rgb(${Math.min(255, r + 20)}, ${Math.min(255, g + 20)}, ${Math.min(255, b + 20)})`;
         } else {
-          top = `rgb(${r + 40}, ${g + 40}, ${b + 40})`;
-          bottom = `rgb(${r + 10}, ${g + 10}, ${b + 10})`;
+          // mittleres Cover → moderater Verlauf
+          top = `rgb(${r + 30}, ${g + 30}, ${b + 30})`;
+          bottom = `rgb(${r - 10}, ${g - 10}, ${b - 10})`;
         }
 
         document.body.style.background = `linear-gradient(to bottom, ${top}, ${bottom})`;
