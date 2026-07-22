@@ -15,15 +15,22 @@
 
     const COVER_IMG = "ALBUMCOVER.jpg";
 
+    // Sichtbarkeit der Plattformen
+    const SHOW_PRESAVE   = true;
+    const SHOW_SPOTIFY   = true;
+    const SHOW_APPLE     = true;
+    const SHOW_INSTAGRAM = true;
+    const SHOW_TIKTOK    = true;
+        
+    const PRESAVE_LOGO = "../PRESAVELOGO.png";
     const SPOTIFY_LOGO = "../SPOTIFYLOGO.png";
     const APPLE_LOGO = "../APPLELOGO.png";
-    const PRESAVE_LOGO = "../PRESAVELOGO.png";
     const INSTAGRAM_LOGO = "../INSTAGRAMLOGO.png";
     const TIKTOK_LOGO = "../TIKTOKLOGO.png";
 
+    const PRESAVE_LINK = "#";
     const SPOTIFY_LINK = "#";
     const APPLE_LINK = "#";
-    const PRESAVE_LINK = "#";
     const INSTAGRAM_LINK = "#";
     const TIKTOK_LINK = "#";
 
@@ -119,6 +126,17 @@
     a.button.instagram { background: var(--instagram-purple);color: #fff; }
     a.button.tiktok    { background: var(--tiktok-black);    color: #fff; }
 
+    .glow {
+      animation: glowPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%   { box-shadow: 0 0 4px rgba(255,255,255,0.2); }
+      50%  { box-shadow: 0 0 14px rgba(255,255,255,0.45); }
+      100% { box-shadow: 0 0 4px rgba(255,255,255,0.2); }
+    }
+
+    
     /* Consent Banner */
     #consent-banner {
       display: none;
@@ -148,7 +166,7 @@
 
 <body>
 
-  <h1 id="song-title"></h1>
+  <h1 id="song-title" class="glow"></h1>
 
   <img id="cover-img" class="cover" alt="Album Cover">
 
@@ -271,6 +289,21 @@
     }
 
     extractColors();
+
+    // Dynamische Titel-Farbe basierend auf Cover
+    let titleColor;
+    
+    if (brightness > 150) {
+      // helles Cover → dunkler Titel
+      titleColor = `rgb(${r * 0.3}, ${g * 0.3}, ${b * 0.3})`;
+    } else {
+      // dunkles Cover → heller Titel
+      titleColor = `rgb(${Math.min(255, r + 180)}, ${Math.min(255, g + 180)}, ${Math.min(255, b + 180)})`;
+    }
+    
+    document.getElementById("song-title").style.color = titleColor;
+    document.getElementById("song-title").style.textShadow = "0 0 8px rgba(0,0,0,0.6)";
+
 
     /* EU Consent */
     async function checkEU() {
