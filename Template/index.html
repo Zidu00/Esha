@@ -15,7 +15,7 @@
 
     const COVER_IMG = "ALBUMCOVER.jpg";
 
-    // Logos (liegen im Hauptordner Esha/)
+    // Logos
     const SPOTIFY_LOGO   = "../SPOTIFYLOGO.png";
     const APPLE_LOGO     = "../APPLELOGO.png";
     const PRESAVE_LOGO   = "../PRESAVELOGO.png";
@@ -109,8 +109,9 @@
       margin: 10px auto;
       max-width: 260px;
     }
+
     #platforms {
-      margin-bottom: 80px; /* Abstand zum Consent-Banner */
+      margin-bottom: 120px; /* Abstand zum Cookie-Badge */
     }
 
     .platform-logo {
@@ -141,24 +142,51 @@
     a.button.instagram { background: var(--instagram-purple);color: #fff; }
     a.button.tiktok    { background: var(--tiktok-black);    color: #fff; }
 
-    /* Consent Banner */
-    #consent-banner {
-      display: none;
+    /* Cookie Badge */
+    #cookie-badge {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111;
+      bottom: 14px;
+      right: 14px;
+      background: #222;
       color: #fff;
-      padding: 14px;
-      text-align: center;
+      padding: 10px 14px;
+      border-radius: 8px;
       font-size: 13px;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.4);
+      cursor: pointer;
+      box-shadow: 0 0 8px rgba(0,0,0,0.4);
+      opacity: 0.85;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 9999;
     }
 
-    #consent-banner button {
+    #cookie-badge:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    /* Consent Dialog */
+    #consent-dialog {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 99999;
+    }
+
+    .consent-box {
+      background: #111;
+      color: #fff;
+      padding: 20px;
+      width: 280px;
+      margin: 120px auto;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 14px rgba(0,0,0,0.5);
+    }
+
+    .consent-box button {
       padding: 8px 14px;
-      margin-left: 10px;
+      margin: 6px;
       background: var(--accent-gold);
       border: none;
       color: #000;
@@ -177,10 +205,20 @@
   <!-- Dynamische Plattformen -->
   <div id="platforms"></div>
 
-  <!-- Consent Banner -->
-  <div id="consent-banner">
-    This site uses tracking (Meta Pixel) for performance and analytics. Please confirm to continue.
-    <button onclick="acceptConsent()">Zustimmen</button>
+  <!-- Cookie Badge -->
+  <div id="cookie-badge" onclick="openConsent()">
+    Tracking Settings ⚙️
+  </div>
+
+  <!-- Consent Dialog -->
+  <div id="consent-dialog">
+    <div class="consent-box">
+      This site uses tracking (Meta Pixel) for performance and analytics.
+      Please confirm to continue.
+      <br><br>
+      <button onclick="acceptConsent()">Confirm</button>
+      <button onclick="closeConsent()">Cancel</button>
+    </div>
   </div>
 
   <script>
@@ -282,6 +320,20 @@
 
     extractColors();
 
+    /* Cookie Badge Logic */
+    function openConsent() {
+      document.getElementById("consent-dialog").style.display = "block";
+    }
+
+    function closeConsent() {
+      document.getElementById("consent-dialog").style.display = "none";
+    }
+
+    function acceptConsent() {
+      document.getElementById("consent-dialog").style.display = "none";
+      loadPixel();
+    }
+
     /* EU Consent */
     async function checkEU() {
       try {
@@ -295,12 +347,12 @@
         ];
 
         if (euCountries.includes(data.country)) {
-          document.getElementById('consent-banner').style.display = 'block';
+          document.getElementById('cookie-badge').style.display = 'block';
         } else {
           loadPixel();
         }
       } catch (e) {
-        document.getElementById('consent-banner').style.display = 'block';
+        document.getElementById('cookie-badge').style.display = 'block';
       }
     }
 
@@ -316,11 +368,6 @@
 
       fbq('init', META_PIXEL_ID);
       fbq('track', 'PageView');
-    }
-
-    function acceptConsent() {
-      document.getElementById('consent-banner').style.display = 'none';
-      loadPixel();
     }
 
     checkEU();
