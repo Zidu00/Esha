@@ -13,7 +13,7 @@
 
     const META_PIXEL_ID = "1288632976680117";
 
-    const COVER_IMG = "100 Days to Live Album Cover v2.JPG";
+    const COVER_IMG = "100 Days to Live Album Cover.jpg";
 
     // Logos
     const SPOTIFY_LOGO   = "../SPOTIFYLOGO.png";
@@ -23,14 +23,14 @@
     const TIKTOK_LOGO    = "../TIKTOKLOGO.png";
 
     // Links
-    const SPOTIFY_LINK   = "https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg";
-    const APPLE_LINK     = "https://music.apple.com/de/album/100-days-to-live-single/1842874012";
+    const SPOTIFY_LINK   = "#";
+    const APPLE_LINK     = "#";
     const PRESAVE_LINK   = "#";
-    const INSTAGRAM_LINK = "https://www.instagram.com/esha_alto/";
-    const TIKTOK_LINK    = "https://www.tiktok.com/@esha_alto";
+    const INSTAGRAM_LINK = "#";
+    const TIKTOK_LINK    = "#";
 
     // Sichtbarkeit der Buttons
-    const SHOW_PRESAVE   = false;
+    const SHOW_PRESAVE   = true;
     const SHOW_SPOTIFY   = true;
     const SHOW_APPLE     = true;
     const SHOW_INSTAGRAM = true;
@@ -229,8 +229,20 @@
 
       const btn = document.createElement("a");
       btn.href = p.link;
-      btn.className = `button ${p.class} disabled`; // disabled until consent
+      btn.className = `button ${p.class} disabled`;
       btn.innerText = p.text;
+
+      // TRACKING + REDIRECT DELAY
+      btn.onclick = function(event) {
+        event.preventDefault();
+
+        fbq('track', 'OutboundClick');
+        fbq('track', p.text.replace(" ", "") + "Click");
+
+        setTimeout(() => {
+          window.location.href = p.link;
+        }, 180);
+      };
 
       row.appendChild(logo);
       row.appendChild(btn);
@@ -305,6 +317,8 @@
       // Enable buttons
       document.querySelectorAll(".button").forEach(btn => {
         btn.classList.remove("disabled");
+        btn.style.pointerEvents = "auto";
+        btn.style.opacity = "1";
       });
 
       loadPixel();
@@ -328,6 +342,8 @@
           loadPixel();
           document.querySelectorAll(".button").forEach(btn => {
             btn.classList.remove("disabled");
+            btn.style.pointerEvents = "auto";
+            btn.style.opacity = "1";
           });
         }
       } catch (e) {
