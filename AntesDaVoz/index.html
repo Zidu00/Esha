@@ -68,15 +68,22 @@
 
     /* Tabelle für Logo rechts + Button links */
     table.platform-table {
+      border-collapse: collapse;   /* entfernt Leerraum */
       margin: 0 auto 30px auto;
       width: 320px;
     }
 
+    table.platform-table tr {
+      line-height: 0.9;            /* kompakt */
+    } 
+    
     table.platform-table td {
       vertical-align: middle;
-      padding: 4px 6px;
+      padding: 2px 4px !important; /* sehr kompakt */
     }
 
+
+    
     td.logo-cell {
       text-align: right;
       width: 40%;
