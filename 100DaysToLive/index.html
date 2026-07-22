@@ -138,7 +138,8 @@
     /* Buttons disabled until consent */
     .disabled {
       pointer-events: none;
-      opacity: 0.45;
+      opacity: 0.35; /* statt 0.45 */
+      filter: grayscale(40%)
     }
 
     /* Farben */
@@ -162,11 +163,19 @@
       color: #fff;
       padding: 20px;
       width: 280px;
-      margin: 120px auto;
+    
+      /* NEU: Position weiter unten */
+      margin: 340px auto 0 auto;
+    
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 0 14px rgba(0,0,0,0.5);
+    
+      /* Optional: leichte Transparenz für eleganteren Look */
+      backdrop-filter: blur(6px);
+      background: rgba(17,17,17,0.92);
     }
+
 
     .consent-box button {
       padding: 8px 14px;
