@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Landingpage – 100 Days To Live</title>
+  <title>Landingpage – SONGTITLE</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ============================
@@ -10,7 +10,7 @@
        ============================ -->
   <script>
     /* Pixel komplett abschaltbar */
-    const PIXEL_MODE = true; // false = kein Pixel, kein Consent
+    const PIXEL_MODE = true;
 
     /* Meta Pixel */
     const META_PIXEL_ID = "DEINE_META_PIXEL_ID";
@@ -47,6 +47,9 @@
     const COVER_SIZE  = 260;
     const LOGO_SIZE   = 26;
     const BUTTON_SIZE = 12;
+
+    /* Logging Repo */
+    const LOG_REPO = "ZiduRecords/Logs";
   </script>
 
   <!-- ============================
@@ -219,6 +222,32 @@
 
     const container = document.getElementById("platforms");
 
+    /* Logging */
+    function sendLogEvent(eventObj) {
+      const line = [
+        eventObj.timestamp,
+        eventObj.song,
+        eventObj.platform,
+        eventObj.event,
+        eventObj.source,
+        eventObj.medium,
+        eventObj.campaign,
+        eventObj.destination
+      ].join(";");
+
+      fetch(`https://api.github.com/repos/${LOG_REPO}/dispatches`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/vnd.github.everest-preview+json",
+          "Authorization": "Bearer YOUR_GITHUB_TOKEN"
+        },
+        body: JSON.stringify({
+          event_type: "log-event",
+          client_payload: { line }
+        })
+      });
+    }
+
     platforms.forEach(p => {
       if (!p.show) return;
 
@@ -242,6 +271,19 @@
         const medium = urlParams.get('utm_medium') || "";
         const campaign = urlParams.get('utm_campaign') || "";
 
+        /* Logging */
+        sendLogEvent({
+          timestamp: new Date().toISOString(),
+          song: SONG_TITLE,
+          platform: p.text,
+          event: p.text.replace(" ", "") + "Click",
+          source,
+          medium,
+          campaign,
+          destination: p.link
+        });
+
+        /* Pixel Tracking */
         if (PIXEL_MODE) {
 
           /* META */
@@ -424,14 +466,4 @@
           var a = d.getElementsByTagName("script")[0];
           a.parentNode.insertBefore(o, a);
         };
-      }(window, document, 'ttq');
-
-      ttq.load(TIKTOK_PIXEL_ID);
-      ttq.page();
-    }
-
-    checkEU();
-  </script>
-
-</body>
-</html>
+      }
