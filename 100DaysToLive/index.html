@@ -2,18 +2,25 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Landingpage – SONGTITLE</title>
+  <title>Landingpage – 100 Days To Live</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ============================
-       ZENTRALE VARIABLEN
+       KONFIGURATION
        ============================ -->
   <script>
-    const SONG_TITLE = "100 Days to Live";
-    const COVER_IMG = "100 Days to Live Album Cover v2.JPG";
+    /* Pixel komplett abschaltbar */
+    const PIXEL_MODE = true; // false = kein Pixel, kein Consent
 
-    const META_PIXEL_ID = "1288632976680117";
-    const PIXEL_MODE = true; // Pixel + Consent aktiv
+    /* Meta Pixel */
+    const META_PIXEL_ID = "DEINE_META_PIXEL_ID";
+
+    /* TikTok Pixel */
+    const TIKTOK_PIXEL_ID = "DEINE_TIKTOK_PIXEL_ID";
+
+    /* Song / Cover */
+    const SONG_TITLE = "100 Days To Live";
+    const COVER_IMG = "100 Days To Live Album Cover v2.jpg";
 
     // Logos
     const SPOTIFY_LOGO   = "https://ZiduRecords.github.io/Assets/SpotifyLogo.png";
@@ -29,14 +36,14 @@
     const INSTAGRAM_LINK = "https://www.instagram.com/esha_alto/";
     const TIKTOK_LINK    = "https://www.tiktok.com/@esha_alto";
 
-    // Sichtbarkeit der Buttons
-    const SHOW_PRESAVE   = false;
+    /* Sichtbarkeit */
+    const SHOW_PRESAVE   = true;
     const SHOW_SPOTIFY   = true;
     const SHOW_APPLE     = true;
     const SHOW_INSTAGRAM = true;
     const SHOW_TIKTOK    = true;
 
-    // Größen
+    /* Größen */
     const COVER_SIZE  = 260;
     const LOGO_SIZE   = 26;
     const BUTTON_SIZE = 12;
@@ -62,7 +69,6 @@
       color: var(--text-light);
       text-align: center;
       padding: 10px;
-      transition: background 1.5s ease;
       animation: bgPulse 14s ease-in-out infinite;
     }
 
@@ -78,7 +84,6 @@
       text-shadow: 0 0 8px rgba(0,0,0,0.6);
     }
 
-    /* Glow Effekt */
     .glow {
       animation: glowPulse 2.4s ease-in-out infinite;
     }
@@ -100,7 +105,6 @@
       transform: scale(1.03);
     }
 
-    /* FLEX-ROW für Logo + Button */
     .platform-row {
       display: flex;
       align-items: center;
@@ -124,7 +128,6 @@
       font-size: var(--button-font-size);
       border-radius: 6px;
       text-decoration: none;
-      white-space: nowrap;
       width: 180px;
       text-align: center;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -135,21 +138,18 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    /* Buttons disabled until consent */
     .disabled {
       pointer-events: none;
-      opacity: 0.35; /* statt 0.45 */
-      filter: grayscale(40%)
+      opacity: 0.35;
+      filter: grayscale(40%);
     }
 
-    /* Farben */
     a.button.spotify   { background: var(--spotify-green);   color: #fff; }
     a.button.apple     { background: var(--apple-red);       color: #fff; }
     a.button.presave   { background: var(--accent-gold);     color: #000; }
     a.button.instagram { background: var(--instagram-purple);color: #fff; }
     a.button.tiktok    { background: var(--tiktok-black);    color: #fff; }
 
-    /* BLOCKIERENDER CONSENT-DIALOG */
     #consent-dialog {
       display: none;
       position: fixed;
@@ -159,23 +159,16 @@
     }
 
     .consent-box {
-      background: #111;
+      background: rgba(17,17,17,0.92);
+      backdrop-filter: blur(6px);
       color: #fff;
       padding: 20px;
       width: 280px;
-    
-      /* NEU: Position weiter unten */
       margin: 340px auto 0 auto;
-    
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 0 14px rgba(0,0,0,0.5);
-    
-      /* Optional: leichte Transparenz für eleganteren Look */
-      backdrop-filter: blur(6px);
-      background: rgba(17,17,17,0.92);
     }
-
 
     .consent-box button {
       padding: 8px 14px;
@@ -195,19 +188,20 @@
 
   <img id="cover-img" class="cover" alt="Album Cover">
 
-  <!-- Dynamische Plattformen -->
   <div id="platforms"></div>
 
-  <!-- BLOCKIERENDER CONSENT-DIALOG -->
   <div id="consent-dialog">
     <div class="consent-box">
-      This site uses tracking (Meta Pixel) for performance and analytics.
+      This site uses tracking (Meta & TikTok Pixel) for analytics.
       Please confirm to continue.
       <br><br>
       <button onclick="acceptConsent()">Confirm</button>
     </div>
   </div>
 
+  <!-- ============================
+       SCRIPTS
+       ============================ -->
   <script>
     document.getElementById("song-title").innerText = SONG_TITLE;
 
@@ -215,7 +209,6 @@
     coverImg.src = COVER_IMG;
     coverImg.style.width = COVER_SIZE + "px";
 
-    /* Dynamische Plattformen */
     const platforms = [
       { show: SHOW_PRESAVE,   logo: PRESAVE_LOGO,   text: "Presave",    link: PRESAVE_LINK,   class: "presave" },
       { show: SHOW_SPOTIFY,   logo: SPOTIFY_LOGO,   text: "Spotify",    link: SPOTIFY_LINK,   class: "spotify" },
@@ -241,13 +234,34 @@
       btn.className = `button ${p.class} disabled`;
       btn.innerText = p.text;
 
-      // TRACKING + REDIRECT DELAY
       btn.onclick = function(event) {
         event.preventDefault();
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('utm_source') || "organic";
+        const medium = urlParams.get('utm_medium') || "";
+        const campaign = urlParams.get('utm_campaign') || "";
+
         if (PIXEL_MODE) {
-          fbq('track', 'OutboundClick');
-          fbq('track', p.text.replace(" ", "") + "Click");
+
+          /* META */
+          fbq('track', 'OutboundClick', { source, medium, campaign });
+          fbq('track', p.text.replace(" ", "") + "Click", { source, medium, campaign });
+
+          /* TIKTOK */
+          if (p.text === "Spotify") {
+            ttq.track('Subscribe', { platform: "Spotify", destination: p.link, source, medium, campaign });
+          }
+
+          if (p.text === "Apple Music") {
+            ttq.track('ViewContent', { platform: "Apple Music", destination: p.link, source, medium, campaign });
+          }
+
+          if (p.text === "Presave") {
+            ttq.track('Lead', { platform: "Presave", destination: p.link, source, medium, campaign });
+          }
+
+          ttq.track('ClickButton', { platform: p.text, destination: p.link, source, medium, campaign });
         }
 
         setTimeout(() => {
@@ -259,12 +273,8 @@
       row.appendChild(btn);
       container.appendChild(row);
     });
-    
-    if (!PIXEL_MODE) {
-      document.getElementById('consent-dialog').style.display = 'none';
-    }
 
-    /* Farbextraktion + dynamische Titel-Farbe */
+    /* Farbextraktion */
     function extractColors() {
       const img = new Image();
       img.crossOrigin = "Anonymous";
@@ -309,7 +319,6 @@
 
         document.body.style.background = `linear-gradient(to bottom, ${top}, ${bottom})`;
 
-        /* Dynamische Titel-Farbe */
         let titleColor;
 
         if (brightness > 150) {
@@ -325,11 +334,10 @@
 
     extractColors();
 
-    /* Consent Logic */
+    /* Consent */
     function acceptConsent() {
       document.getElementById("consent-dialog").style.display = "none";
 
-      // Enable buttons
       document.querySelectorAll(".button").forEach(btn => {
         btn.classList.remove("disabled");
         btn.style.pointerEvents = "auto";
@@ -339,8 +347,16 @@
       loadPixel();
     }
 
-    /* EU Consent */
     async function checkEU() {
+      if (!PIXEL_MODE) {
+        document.querySelectorAll(".button").forEach(btn => {
+          btn.classList.remove("disabled");
+          btn.style.pointerEvents = "auto";
+          btn.style.opacity = "1";
+        });
+        return;
+      }
+
       try {
         const response = await fetch("https://ipapi.co/json/");
         const data = await response.json();
@@ -351,16 +367,6 @@
           "SI","ES","SE"
         ];
 
-        if (!PIXEL_MODE) {
-          // Pixel deaktiviert → Buttons sofort aktiv
-          document.querySelectorAll(".button").forEach(btn => {
-            btn.classList.remove("disabled");
-            btn.style.pointerEvents = "auto";
-            btn.style.opacity = "1";
-          });
-          return;
-        }
-        
         if (euCountries.includes(data.country)) {
           document.getElementById('consent-dialog').style.display = 'block';
         } else {
@@ -371,15 +377,16 @@
             btn.style.opacity = "1";
           });
         }
-
       } catch (e) {
         document.getElementById('consent-dialog').style.display = 'block';
       }
     }
 
+    /* Pixel Loader */
     function loadPixel() {
-      if (!PIXEL_MODE) return; // Pixel deaktiviert
-    
+      if (!PIXEL_MODE) return;
+
+      /* META PIXEL */
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -388,11 +395,40 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-    
+
       fbq('init', META_PIXEL_ID);
       fbq('track', 'PageView');
-    }
 
+      /* TIKTOK PIXEL */
+      !function (w, d, t) {
+        w.TiktokAnalyticsObject = t;
+        var ttq = w[t] = w[t] || [];
+        ttq.methods = ["page", "track", "identify", "instances", "debug", "on", "off", "once", "ready", "alias", "group", "enableCookie", "disableCookie"];
+        ttq.setAndDefer = function (t, e) { t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } };
+        for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
+        ttq.instance = function (t) {
+          for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++) ttq.setAndDefer(e, ttq.methods[n]);
+          return e;
+        };
+        ttq.load = function (e, n) {
+          var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
+          ttq._i = ttq._i || {};
+          ttq._i[e] = [];
+          ttq._i[e]._u = i;
+          ttq._i[e]._sn = e;
+          ttq._i[e]._sv = n || "1.1";
+          var o = d.createElement("script");
+          o.type = "text/javascript";
+          o.async = !0;
+          o.src = i + "?sdkid=" + e + "&lib=" + t;
+          var a = d.getElementsByTagName("script")[0];
+          a.parentNode.insertBefore(o, a);
+        };
+      }(window, document, 'ttq');
+
+      ttq.load(TIKTOK_PIXEL_ID);
+      ttq.page();
+    }
 
     checkEU();
   </script>
