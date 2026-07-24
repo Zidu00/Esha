@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Landingpage – SONGTITLE</title>
+  <title>Landingpage – 100 Days to Live</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ============================
@@ -19,21 +19,21 @@
     const TIKTOK_PIXEL_ID = "DEINE_TIKTOK_PIXEL_ID";
 
     /* Song / Cover */
-    const SONG_TITLE = "100 Days To Live";
-    const COVER_IMG = "100 Days To Live Album Cover v2.jpg";
+    const SONG_TITLE = "100 Days to Live";
+    const COVER_IMG = "ALBUMCOVER.jpg";
 
-    // Logos
-    const SPOTIFY_LOGO   = "https://ZiduRecords.github.io/Assets/SpotifyLogo.png";
-    const APPLE_LOGO     = "https://ZiduRecords.github.io/Assets/AppleMusicLogo.png";
+    /* Logos */
+    const SPOTIFY_LOGO   = "../SPOTIFYLOGO.png";
+    const APPLE_LOGO     = "../APPLELOGO.png";
     const PRESAVE_LOGO   = "../PRESAVELOGO.png";
-    const INSTAGRAM_LOGO = "https://ZiduRecords.github.io/Assets/InstagramLogo.png";
-    const TIKTOK_LOGO    = "https://ZiduRecords.github.io/Assets/TikTokLogo.png";
+    const INSTAGRAM_LOGO = "../INSTAGRAMLOGO.png";
+    const TIKTOK_LOGO    = "../TIKTOKLOGO.png";
 
-    // Links
-    const SPOTIFY_LINK   = "https://open.spotify.com/intl-de/album/0TRAGa288rc3Hk6lwcAPmg";
-    const APPLE_LINK     = "https://music.apple.com/de/album/100-days-to-live-single/1842874012";
+    /* Links */
+    const SPOTIFY_LINK   = "#";
+    const APPLE_LINK     = "#";
     const PRESAVE_LINK   = "#";
-    const INSTAGRAM_LINK = "https://www.instagram.com/esha_alto/";
+    const INSTAGRAM_LINK = "https://www.instagram.com/esha_alto";
     const TIKTOK_LINK    = "https://www.tiktok.com/@esha_alto";
 
     /* Sichtbarkeit */
@@ -48,7 +48,7 @@
     const LOGO_SIZE   = 26;
     const BUTTON_SIZE = 12;
 
-    /* Logging Repo */
+    /* Logging Repo (nur als Info, kein Token im Browser!) */
     const LOG_REPO = "ZiduRecords/Logs";
   </script>
 
@@ -222,7 +222,7 @@
 
     const container = document.getElementById("platforms");
 
-    /* Logging */
+    /* Logging – hier nur Hook, Auth gehört NICHT in den Browser */
     function sendLogEvent(eventObj) {
       const line = [
         eventObj.timestamp,
@@ -235,17 +235,9 @@
         eventObj.destination
       ].join(";");
 
-      fetch(`https://api.github.com/repos/${LOG_REPO}/dispatches`, {
-        method: "POST",
-        headers: {
-          "Accept": "application/vnd.github.everest-preview+json",
-          "Authorization": "Bearer YOUR_GITHUB_TOKEN"
-        },
-        body: JSON.stringify({
-          event_type: "log-event",
-          client_payload: { line }
-        })
-      });
+      // TODO: Hier später über einen sicheren Proxy/Backend an GitHub senden.
+      // Beispiel: fetch("/log-event", { method: "POST", body: JSON.stringify({ line }) });
+      console.log("LogEvent:", line);
     }
 
     platforms.forEach(p => {
@@ -466,4 +458,14 @@
           var a = d.getElementsByTagName("script")[0];
           a.parentNode.insertBefore(o, a);
         };
-      }
+      }(window, document, 'ttq');
+
+      ttq.load(TIKTOK_PIXEL_ID);
+      ttq.page();
+    }
+
+    checkEU();
+  </script>
+
+</body>
+</html>
